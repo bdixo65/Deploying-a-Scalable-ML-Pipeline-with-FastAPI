@@ -1,7 +1,7 @@
 import pickle
 from sklearn.metrics import fbeta_score, precision_score, recall_score
 from ml.data import process_data
-# TODO: add necessary import
+from sklearn.ensemble import RandomForestClassifier
 
 # Optional: implement hyperparameter tuning.
 def train_model(X_train, y_train):
@@ -19,7 +19,7 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    model = LogisticRegression(max_iter=1000)
+    model = RandomForestClassifier(n_estimators=100, random_state=42)
     model.fit(X_train, y_train)
     return model
     pass
@@ -74,13 +74,15 @@ def save_model(model, path):
     path : str
         Path to save pickle file.
     """
-    joblib.dump(model, path)
+    with open(path, "wb") as f:
+        pickle.dump(model, f)
     pass
 
 def load_model(path):
     """ Loads pickle file from `path` and returns it."""
-    joblib.load(path)
-    pass
+    with open(path, "rb") as f:
+        return pickle.load(f)
+    
 
 
 def performance_on_categorical_slice(
